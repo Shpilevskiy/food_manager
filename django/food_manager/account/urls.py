@@ -3,6 +3,10 @@ from django.conf.urls import (
     include
 )
 
-urlpatterns = [
+from account.views import (
+    UserRetrieveUpdateView,
+)
 
+urlpatterns = [
+    url(r'profile/', UserRetrieveUpdateView.as_view(), name='profile')
 ]

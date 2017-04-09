@@ -6,13 +6,15 @@ from rest_framework import (
 )
 from rest_framework.response import Response
 
-from account.serializers import UserSerializer
+from account.serializers import (
+    UserRegistrationSerializer,
+    UserProfileSerializer
+)
 
 
 class UserCreateView(generics.CreateAPIView):
-    model = User.objects.all()
     permission_classes = (permissions.AllowAny,)
-    serializer_class = UserSerializer
+    serializer_class = UserRegistrationSerializer
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
@@ -24,3 +26,11 @@ class UserCreateView(generics.CreateAPIView):
         },
             status=status.HTTP_201_CREATED, headers=headers
         )
+
+
+class UserRetrieveUpdateView(generics.RetrieveUpdateAPIView):
+    permission_classes = (permissions.IsAuthenticated,)
+    serializer_class = UserProfileSerializer
+
+    def get_object(self):
+        return self.request.user
